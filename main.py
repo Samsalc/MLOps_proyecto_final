@@ -67,13 +67,14 @@ async def predict(
     try:
         df = pd.DataFrame(dictionary, index=[0])
         prediction = model.predict(df)
-
-        if prediction == 1.0:
-            result = "El bebe esta sano"
-        elif prediction == 2.0:
-            result = "El bebe esta en riesgo"
+        if prediction[0] == 1:
+            result = "More chance of heart attack"
+        elif prediction[0] == 2:
+            result = "Moderate chance of heart attack"
+        elif prediction[0] == 3:
+            result = "Less chance of heart attack"
         else:
-            result = "El bebe es patologico"
+            result = "Unknown"
 
         return JSONResponse(status_code=status.HTTP_200_OK, content={"prediction": result})
 
