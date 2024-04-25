@@ -44,4 +44,4 @@ jobs:
               docker rm fetal-health
             fi
             docker pull ${{ secrets.DOCKER_USERNAME }}/deploy-fetal-health:v1
-            docker run  -d --name fetal-health -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/deploy-fetal-health:v1
+            docker run -d --name fetal-health -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/deploy-fetal-health:v1
