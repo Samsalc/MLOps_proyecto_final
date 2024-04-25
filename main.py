@@ -68,11 +68,11 @@ async def predict(
         df = pd.DataFrame(dictionary, index=[0])
         prediction = model.predict(df)
         if prediction[0] == 1:
-            result = "More chance of heart attack"
+            result = "El bebe esta sano"
         elif prediction[0] == 2:
-            result = "Moderate chance of heart attack"
+            result = "El bebe esta en riesgo"
         elif prediction[0] == 3:
-            result = "Less chance of heart attack"
+            result = "El bebe es patologico"
         else:
             result = "Unknown"
 
