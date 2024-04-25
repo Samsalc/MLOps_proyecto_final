@@ -1,6 +1,16 @@
 version = 1
 
 [[analyzers]]
+name = "cfn-lint"
+type = "community"
+
+[[analyzers]]
+name = "secrets"
+
+[[analyzers]]
+name = "docker"
+
+[[analyzers]]
 name = "python"
 
   [analyzers.meta]
