@@ -67,13 +67,16 @@ async def predict(
     try:
         df = pd.DataFrame(dictionary, index=[0])
         prediction = model.predict(df)
-        prediction = int(prediction[0])
-        return JSONResponse(
-            status_code=status.HTTP_200_OK,
-            content={"prediction": prediction}
-        )
+
+        if prediction[0] == 1:
+            result = "El bebe esta sano"
+        elif prediction[0] == 2:
+            result = "El bebe esta enfermo"
+        else:
+            result = "El bebe es patologico"
+
+        return JSONResponse(status_code=status.HTTP_200_OK, content={"prediction": result})
+
     except Exception as e:
-        raise HTTPException(
-            detail=str(e),
-            status_code=status.HTTP_400_BAD_REQUEST
-        )
+        raise HTTPException(detail=str(e), status_code=status.HTTP_400_BAD_REQUEST)
+
