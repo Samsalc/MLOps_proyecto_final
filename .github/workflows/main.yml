@@ -2,6 +2,9 @@ name: CI model to dockerhub
 
 # Trigger
 on:
+  push:
+    branches:
+      - dev
   pull_request:
     branches:
       - dev
@@ -27,3 +30,18 @@ jobs:
 
       - name: Docker push to Dockerhub
         run: docker push samsalca/deploy-fetal-health:v1
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{secrets.EC2_PRIVATE_KEY }}
+          script: |
+            docker login -u '${{ secrets.DOCKER_USERNAME }}' -p '${{ secrets.DOCKER_PASSWORD }}'
+            if docker ps --all | grep -q fetal-health; then
+              docker stop fetal-health 
+              docker rm fetal-health
+            fi
+            docker pull ${{ secrets.DOCKER_USERNAME }}/deploy-fetal-health:v1
+            docker run -d --name fetal-health -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/deploy-fetal-health:v1
